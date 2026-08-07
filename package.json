@@ -1,7 +1,8 @@
 {
 	"name": "hm-content-outlet",
 	"version": "1.0.0",
-	"description": "Author content anywhere in a post, render it at a fixed position in the template.",
+	"private": true,
+	"description": "Author content anywhere in a post, render it outside the post content at a fixed position within the template.",
 	"author": "Human Made",
 	"license": "GPL-2.0-or-later",
 	"scripts": {
@@ -21,6 +22,6 @@
 		"env:stop": "npx @wordpress/env stop"
 	},
 	"devDependencies": {
-		"@wordpress/scripts": "^32.0.0"
+		"@wordpress/scripts": "^34.0.0"
 	}
 }
