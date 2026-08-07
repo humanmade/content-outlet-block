@@ -7,18 +7,9 @@
 	"icon": "admin-generic",
 	"description": "Wraps content that renders elsewhere in the template through a matching Outlet block, not in this position.",
 	"textdomain": "hm-content-outlet",
-	"attributes": {
-		"lock": {
-			"type": "object",
-			"default": {
-				"remove": true
-			}
-		}
-	},
 	"supports": {
 		"multiple": false,
-		"html": false,
-		"lock": false
+		"html": false
 	},
 	"editorScript": "file:./index.js",
 	"render": "file:./render.php"

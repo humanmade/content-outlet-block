@@ -1,10 +1,8 @@
 <?php
 /**
- * Outlet Block: server-side render.
+ * Frontend render template for the outlet block.
  *
- * Renders the current post's hm/outlet-content block content at this position.
- *
- * @package hm-content-outlet
+ * @see https://github.com/WordPress/gutenberg/blob/trunk/docs/reference-guides/block-api/block-metadata.md#render
  */
 
 echo \HM\ContentOutlet\render_outlet_content( get_the_ID() ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped

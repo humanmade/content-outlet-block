@@ -1,8 +1,6 @@
 <?php
 /**
- * HM Content Outlet main namespace.
- *
- * @package hm-content-outlet
+ * Plugin bootstrap, block registration, and outlet rendering.
  */
 
 namespace HM\ContentOutlet;
@@ -10,26 +8,30 @@ namespace HM\ContentOutlet;
 const CONTENT_BLOCK = 'hm/outlet-content';
 
 /**
- * Connect namespace functions to hooks.
+ * Attach hooks.
  */
 function bootstrap(): void {
-	add_action( 'init', __NAMESPACE__ . '\register_blocks' );
+	add_action( 'init', __NAMESPACE__ . '\\register_blocks' );
 }
 
 /**
- * Register the outlet content and outlet blocks.
+ * Register every block built into build/blocks/.
+ *
+ * The wp-scripts build emits one directory per block, each with a compiled block.json
+ * whose file: references resolve relative to the build output.
  */
 function register_blocks(): void {
-	register_block_type_from_metadata( PLUGIN_PATH . '/build/blocks/outlet-content/block.json' );
-	register_block_type_from_metadata( PLUGIN_PATH . '/build/blocks/outlet/block.json' );
+	foreach ( glob( PLUGIN_PATH . '/build/blocks/*/block.json' ) as $block_metadata_file ) {
+		register_block_type_from_metadata( $block_metadata_file );
+	}
 }
 
 /**
- * Get or set whether the outlet content block is currently being rendered by
- * an outlet, rather than in its own position in post content.
+ * Get or set whether the content block is being rendered by an outlet.
  *
- * The content block's render callback checks this flag to decide whether to
- * render at all, so its content appears once, only through the outlet.
+ * The content block's own render callback reads this to decide whether to
+ * render, which is what keeps it from also appearing where it sits in the
+ * post body.
  *
  * @param ?bool $set When given, updates the flag before returning it.
  * @return bool Current flag state.
@@ -43,10 +45,10 @@ function is_rendering_via_outlet( ?bool $set = null ): bool {
 }
 
 /**
- * Render a post's outlet content block, for use by the outlet block.
+ * Render a post's content block, for use by the outlet block.
  *
- * @param int $post_id Post to search for an outlet content block.
- * @return string Rendered content, or '' if the post has no content block.
+ * @param int $post_id Post to search.
+ * @return string Rendered content, or '' when the post has no content block.
  */
 function render_outlet_content( int $post_id ): string {
 	$post = $post_id ? get_post( $post_id ) : null;
@@ -67,11 +69,11 @@ function render_outlet_content( int $post_id ): string {
 }
 
 /**
- * Recursively find the first block of the given name in a parsed block tree.
+ * Find the first block of the given name, at any depth.
  *
  * @param array<int, array<string, mixed>> $blocks Parsed blocks.
  * @param string                           $name   Block name to find.
- * @return ?array<string, mixed> Parsed block, or null if not found.
+ * @return ?array<string, mixed> Parsed block, or null when absent.
  */
 function find_block( array $blocks, string $name ): ?array {
 	foreach ( $blocks as $block ) {
