@@ -11,5 +11,7 @@
 if ( ! \HM\ContentOutlet\is_rendering_via_outlet() ) {
 	return;
 }
-
-printf( '<div %s>%s</div>', get_block_wrapper_attributes(), $content ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
+	
+/** @var string $content Pre-rendered nested block content as HTML string. */
+// phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
+echo $content;
