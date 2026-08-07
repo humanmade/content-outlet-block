@@ -1,0 +1,27 @@
+{
+    "name": "humanmade/content-outlet",
+    "description": "Author content anywhere in a post, render it at a fixed position in the template.",
+    "type": "wordpress-plugin",
+    "license": "GPL-2.0-or-later",
+    "authors": [
+        {
+            "name": "Human Made Limited",
+            "email": "engineering@humanmade.com"
+        }
+    ],
+    "require": {
+        "composer/installers": "^1 || ^2"
+    },
+    "require-dev": {
+        "humanmade/coding-standards": "^2.5"
+    },
+    "scripts": {
+        "phpcs": "phpcs --standard=HM -s --extensions=php plugin.php inc src"
+    },
+    "config": {
+        "allow-plugins": {
+            "composer/installers": true,
+            "dealerdirect/phpcodesniffer-composer-installer": true
+        }
+    }
+}

@@ -1,0 +1,16 @@
+# Dependencies
+node_modules/
+vendor/
+
+# CI-generated code.
+/build/
+
+# Local agent session state.
+/.claude/
+
+# Environment-specific
+.env
+
+# Platform
+.DS_Store
+._*

@@ -1,0 +1,25 @@
+{
+	"name": "hm-content-outlet",
+	"version": "1.0.0",
+	"description": "Author content anywhere in a post, render it at a fixed position in the template.",
+	"author": "Human Made",
+	"license": "GPL-2.0-or-later",
+	"scripts": {
+		"build": "wp-scripts build --webpack-copy-php",
+		"start": "wp-scripts start --webpack-copy-php",
+		"format": "wp-scripts format",
+		"lint:css": "wp-scripts lint-style",
+		"lint:js": "wp-scripts lint-js",
+		"lint:pkg-json": "wp-scripts lint-pkg-json",
+		"packages-update": "wp-scripts packages-update",
+		"plugin-zip": "wp-scripts plugin-zip",
+		"env:cli": "npx @wordpress/env run cli",
+		"env:destroy": "npx @wordpress/env destroy",
+		"env:logs": "npx @wordpress/env logs development | grep -v -E '\"(GET|OPTIONS|HEAD|POST|PUT)'",
+		"env:start": "npx @wordpress/env start",
+		"env:stop": "npx @wordpress/env stop"
+	},
+	"devDependencies": {
+		"@wordpress/scripts": "^32.0.0"
+	}
+}

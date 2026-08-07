@@ -1,0 +1,15 @@
+{
+	"$schema": "https://schemas.wp.org/trunk/block.json",
+	"apiVersion": 3,
+	"name": "hm/outlet",
+	"title": "Outlet",
+	"category": "design",
+	"icon": "migrate",
+	"description": "Renders the current post's Outlet Content block at this position in the template.",
+	"textdomain": "hm-content-outlet",
+	"supports": {
+		"html": false
+	},
+	"editorScript": "file:./index.js",
+	"render": "file:./render.php"
+}
