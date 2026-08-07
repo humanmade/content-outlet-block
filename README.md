@@ -27,6 +27,25 @@ composer phpcs
 npm run lint:js
 ```
 
+### Local Environment
+
+This project uses [wp-env](https://developer.wordpress.org/block-editor/reference-guides/packages/packages-env/) to run a lightweight, containerized WordPress instance at [localhost:6858](http://localhost:6858) for testing purposes. The default username for the localhost environment is `admin`, with the password `password`.
+
+These commands can be used to interact with the environment:
+
+Command | Purpose
+---- | ----
+`npm run env:start` | Start the local environment at http://localhost:6858
+`npm run env:stop` | Turn off the local environment
+`npm run env:cli -- wp ...` | Run WP-CLI commands within the environment
+`npm run env:logs` | Open (and tail) the error logs for the application<sup>&ddagger;</sup>
+`npm run env:db` | Open the database in the mysql command line
+`npm run env:destroy` | Fully destroy the local environment (deletes container database)
+
+<sup>&ddagger;</sup> This command deliberately filters out GET/OPTIONS/HEAD/POST/PUT access log entries
+
+## Release Process
+
 Code merged to `main` automatically builds to the `release` branch via GitHub Actions; `release` is what Composer installs.
 
 Tag versions with the [**Tag and Release** workflow](https://github.com/humanmade/content-outlet-block/actions) after bumping the version number in `plugin.php`.
