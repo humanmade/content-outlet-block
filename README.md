@@ -20,6 +20,12 @@ Nothing is extracted as a string, and nothing is "moved". The same block is aske
 
 Outlet Content is a dynamic block that stores `<InnerBlocks.Content />` in its save method, to be able to persist wrapped content without any parent markup. The dynamic `render.php` logic chooses whether to render/output that wrapped content or not based on context at render time. When rendering _in situ_, `outlet-content/render.php` receives fully rendered inner HTML as `$content` and only has to wrap it.
 
+### Layout context
+
+Outlet Content registers layout support, and its own wide alignment, in JS rather than `block.json`, keeping both out of the server-side block type. Wide and full alignment are offered only where the parent supplies a `constrained` layout, and without one a nested Group, which aligns solely wide or full, has no alignment toolbar at all.
+
+Declared in `block.json` the same support would apply on the front end, where WordPress stamps `is-layout-constrained` and its container classes onto the first tag of the output — the first child block, this block having no wrapper of its own. Split this way, the editor offers the controls and previews the wrapped blocks near their rendered width, while the front end leaves alignment to whatever contains the outlet.
+
 ### A single request
 
 ```mermaid
