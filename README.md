@@ -1,6 +1,6 @@
 # Content Outlet Block
 
-Have you ever wanted to take some part of your post content in a complex template, and output it separately from the rest of the main content area? Maybe you have a hero section that displays above some template chrome, say. You could bake all that into the content template, but that can require either brittle block locking, editorial discipline, or both if you want the template to be consistently applied across the site.
+Have you ever wanted to take some part of your post content in a complex template, and output it separately from the rest of the main content area? Maybe you have a hero section that displays above some template chrome. You could bake all that into the content template, but that can require either brittle block locking, editorial discipline, or both if you want the template to be consistently applied across the site.
 
 This plugin proposes a wrapper block which can hold any other block content, authored
 anywhere within a post, and then an outlet block which can be used elsewhere in the page template to render the wrapped content at a fixed position.

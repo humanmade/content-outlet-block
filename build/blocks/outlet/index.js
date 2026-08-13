@@ -1,0 +1,1 @@
+(()=>{"use strict";const t=window.wp.blocks,e=window.wp.blockEditor,n=window.wp.i18n,o=window.ReactJSXRuntime;(0,t.registerBlockType)("hm/outlet",{edit:function(){const t=(0,e.useBlockProps)();return(0,o.jsx)("div",{...t,children:(0,o.jsx)("p",{children:(0,n.__)("Outlet: renders this post’s Outlet Content block here.","hm-content-outlet")})})},save:()=>null})})();

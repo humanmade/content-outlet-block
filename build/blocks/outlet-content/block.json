@@ -1,0 +1,16 @@
+{
+  "$schema": "https://schemas.wp.org/trunk/block.json",
+  "apiVersion": 3,
+  "name": "hm/outlet-content",
+  "title": "Outlet Content",
+  "category": "design",
+  "icon": "admin-generic",
+  "description": "Wraps content that renders elsewhere in the template through a matching Outlet block, not in this position.",
+  "textdomain": "hm-content-outlet",
+  "supports": {
+    "multiple": false,
+    "html": false
+  },
+  "editorScript": "file:./index.js",
+  "render": "file:./render.php"
+}
