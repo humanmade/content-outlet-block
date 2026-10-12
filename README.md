@@ -10,7 +10,16 @@ Details on those blocks:
 - **Outlet Content** (`hm/outlet-content`) wraps inner blocks in the post body. Renders nothing where it sits.
 - **Outlet** (`hm/outlet`) is placed in a template *outside* `post_content`, _e.g._ above a wrapping columns unit in the single-post template. Renders the current post's wrapped Outlet Content blocks at that position.
 
-The Outlet finds the content block by name, at any depth, so where the editor puts it in the body has no bearing on output. At present there can only be one content wrapper per post (`supports.multiple: false`), since the Outlet renders the first match.
+The Outlet finds the content block by name and slot, at any depth, so where the editor puts it in the body has no bearing on output.
+
+### Slots
+
+Both blocks have a `slot` attribute, so one template can place several pieces of a post's content in different positions, such as a hero above the columns and cards in each sidebar.
+
+- An Outlet renders the first Outlet Content block in the post with the same `slot`.
+- Set the slot in each block's settings sidebar, or in markup: `<!-- wp:hm/outlet {"slot":"sidebar"} /-->`.
+- Leaving `slot` empty uses the default slot, so content and templates written before slots existed keep working unchanged.
+- Only the first Outlet Content block for a slot renders, so the editor warns on any later block that fills the same slot.
 
 ## Architecture
 
@@ -58,7 +67,7 @@ sequenceDiagram
 
 - `post_content` is parsed twice per request: once by `do_blocks()`, once by the outlet's lookup.
 - **The suppressed pass is not free.** `WP_Block::render()` renders inner blocks *before* calling the block's render callback, so the wrapped subtree **renders a second time** during the post body pass and the result is thrown away. This is fine for static blocks or cheap-generation dynamic blocks, but be aware that an expensive Query Loop, remote fetch, or anything else complex inside the wrapper will be triggered twice.
-- `render_block()` is called with no explicit context array, so a nested dynamic child relying on `usesContext` (`postId`, `postType`) gets an empty context and falls back to its own default.
+- `render_block()` takes its `postId` and `postType` context from the global `$post`, which block themes set up on singular templates, so context-dependent blocks such as Breadcrumbs or Post Terms work inside a wrapper. Anywhere the global post is not the post being rendered, they would use the global post instead.
 - The lookup is by name, so the block's index in the post is never read.
 
 ## Development
