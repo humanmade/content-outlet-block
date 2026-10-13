@@ -11,7 +11,11 @@
 if ( ! \HM\ContentOutlet\is_rendering_via_outlet() ) {
 	return;
 }
-	
-/** @var string $content Pre-rendered nested block content as HTML string. */
+
+/**
+ * Pre-rendered nested block content.
+ *
+ * @var string $content HTML string.
+ */
 // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
 echo $content;
