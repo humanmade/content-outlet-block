@@ -6,4 +6,4 @@
  */
 
 // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
-echo \HM\ContentOutlet\render_outlet_content( get_the_ID() );
+echo \HM\ContentOutlet\render_outlet_content( (int) get_the_ID(), (string) ( $attributes['slot'] ?? '' ) );

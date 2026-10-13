@@ -5,10 +5,15 @@
 	"title": "Outlet Content",
 	"category": "design",
 	"icon": "admin-generic",
-	"description": "Wraps content that renders elsewhere in the template through a matching Outlet block, not in this position.",
+	"description": "Wraps content that renders elsewhere in the template through the Outlet block for the same slot, not in this position.",
 	"textdomain": "hm-content-outlet",
+	"attributes": {
+		"slot": {
+			"type": "string",
+			"default": ""
+		}
+	},
 	"supports": {
-		"multiple": false,
 		"html": false
 	},
 	"editorScript": "file:./index.js",

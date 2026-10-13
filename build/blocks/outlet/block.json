@@ -5,8 +5,14 @@
   "title": "Outlet",
   "category": "design",
   "icon": "migrate",
-  "description": "Renders the current post's Outlet Content block at this position in the template.",
+  "description": "Renders the current post's Outlet Content block for the same slot at this position in the template.",
   "textdomain": "hm-content-outlet",
+  "attributes": {
+    "slot": {
+      "type": "string",
+      "default": ""
+    }
+  },
   "supports": {
     "html": false
   },
