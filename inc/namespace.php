@@ -27,21 +27,34 @@ function register_blocks(): void {
 }
 
 /**
- * Get or set whether the content block is being rendered by an outlet.
+ * Get or set the slot an outlet is currently rendering.
  *
- * The content block's own render callback reads this to decide whether to
- * render, which is what keeps it from also appearing where it sits in the
- * post body.
+ * The content block's own render callback compares this with its slot to
+ * decide whether to render, which keeps it from also appearing where it sits
+ * in the post body, and keeps a content block nested inside another slot's
+ * content block from rendering as part of that slot.
  *
- * @param ?bool $set When given, updates the flag before returning it.
- * @return bool Current flag state.
+ * @param string|null|false $set Slot to set, null when no outlet is rendering, or false to only read.
+ * @return ?string Slot being rendered ('' for the default slot), or null when no outlet is rendering.
  */
-function is_rendering_via_outlet( ?bool $set = null ): bool {
-	static $rendering = false;
-	if ( $set !== null ) {
-		$rendering = $set;
+function rendering_slot( string|null|false $set = false ): ?string {
+	static $slot = null;
+	if ( $set !== false ) {
+		$slot = $set;
 	}
-	return $rendering;
+	return $slot;
+}
+
+/**
+ * Normalize a slot name, so slots match regardless of case or spacing.
+ *
+ * Mirrors normalizeSlot() in the editor, for markup written by hand.
+ *
+ * @param mixed $slot Raw slot attribute.
+ * @return string Normalized slot name, or '' for the default slot.
+ */
+function normalize_slot( mixed $slot ): string {
+	return sanitize_key( str_replace( ' ', '-', (string) $slot ) );
 }
 
 /**
@@ -60,14 +73,15 @@ function render_outlet_content( int $post_id, string $slot = '' ): string {
 		return '';
 	}
 
+	$slot  = normalize_slot( $slot );
 	$block = find_block( parse_blocks( $post->post_content ), CONTENT_BLOCK, $slot );
 	if ( ! $block ) {
 		return '';
 	}
 
-	is_rendering_via_outlet( true );
+	rendering_slot( $slot );
 	$html = render_block( $block );
-	is_rendering_via_outlet( false );
+	rendering_slot( null );
 
 	return $html;
 }
@@ -84,7 +98,7 @@ function find_block( array $blocks, string $name, ?string $slot = null ): ?array
 	foreach ( $blocks as $block ) {
 		if (
 			( $block['blockName'] ?? null ) === $name
-			&& ( null === $slot || (string) ( $block['attrs']['slot'] ?? '' ) === $slot )
+			&& ( null === $slot || normalize_slot( $block['attrs']['slot'] ?? '' ) === $slot )
 		) {
 			return $block;
 		}

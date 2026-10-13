@@ -2,6 +2,8 @@ import { useBlockProps, InspectorControls } from '@wordpress/block-editor';
 import { PanelBody, TextControl } from '@wordpress/components';
 import { __, sprintf } from '@wordpress/i18n';
 
+import normalizeSlot from '../../normalize-slot';
+
 export default function Edit( { attributes: { slot }, setAttributes } ) {
 	const blockProps = useBlockProps();
 
@@ -18,7 +20,7 @@ export default function Edit( { attributes: { slot }, setAttributes } ) {
 						) }
 						value={ slot }
 						onChange={ ( value ) =>
-							setAttributes( { slot: value.trim() } )
+							setAttributes( { slot: normalizeSlot( value ) } )
 						}
 					/>
 				</PanelBody>

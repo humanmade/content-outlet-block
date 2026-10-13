@@ -18,6 +18,7 @@ Both blocks have a `slot` attribute, so one template can place several pieces of
 
 - An Outlet renders the first Outlet Content block in the post with the same `slot`.
 - Set the slot in each block's settings sidebar, or in markup: `<!-- wp:hm/outlet {"slot":"sidebar"} /-->`.
+- Slot names are normalized to lowercase, with spaces turned into hyphens and other characters outside `a-z`, `0-9`, `-` and `_` removed, so `Main Sidebar` matches `main-sidebar`.
 - Leaving `slot` empty uses the default slot, so content and templates written before slots existed keep working unchanged.
 - Only the first Outlet Content block for a slot renders, so the editor warns on any later block that fills the same slot.
 
@@ -61,14 +62,14 @@ sequenceDiagram
     Con-->>Tpl: empty string
 ```
 
-`is_rendering_via_outlet()` is a function-static toggled around that one `render_block()` call, not a request-level "already rendered" latch. So outlet placement relative to the Post Content block doesn't matter; the flag is only raised during the outlet's own call, and the body pass is suppressed no matter where the outlet is placed (before _vs_ after the post-content block). It would misbehave only if something rendered post content *inside* the outlet's `render_block()` call, which&hellip; don't do that `:)`.
+`rendering_slot()` is a function-static set to the outlet's slot around that one `render_block()` call, not a request-level "already rendered" latch. A content block renders only while its own slot is set, so one nested inside another slot's content block stays hidden there. Outlet placement relative to the Post Content block doesn't matter; the slot is only set during the outlet's own call, and the body pass is suppressed no matter where the outlet is placed (before _vs_ after the post-content block). It would misbehave only if something rendered post content *inside* the outlet's `render_block()` call, which&hellip; don't do that `:)`.
 
 ### Costs
 
-- `post_content` is parsed twice per request: once by `do_blocks()`, once by the outlet's lookup.
+- `post_content` is parsed once by `do_blocks()`, plus once more for each Outlet's lookup, so a template with three Outlets parses it four times.
 - **The suppressed pass is not free.** `WP_Block::render()` renders inner blocks *before* calling the block's render callback, so the wrapped subtree **renders a second time** during the post body pass and the result is thrown away. This is fine for static blocks or cheap-generation dynamic blocks, but be aware that an expensive Query Loop, remote fetch, or anything else complex inside the wrapper will be triggered twice.
 - `render_block()` takes its `postId` and `postType` context from the global `$post`, which block themes set up on singular templates, so context-dependent blocks such as Breadcrumbs or Post Terms work inside a wrapper. Anywhere the global post is not the post being rendered, they would use the global post instead.
-- The lookup is by name, so the block's index in the post is never read.
+- The lookup is by name and slot, so the block's index in the post is never read.
 
 ## Development
 

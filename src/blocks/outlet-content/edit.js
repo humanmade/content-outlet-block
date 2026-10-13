@@ -8,6 +8,8 @@ import { PanelBody, Notice, TextControl } from '@wordpress/components';
 import { useSelect } from '@wordpress/data';
 import { __ } from '@wordpress/i18n';
 
+import normalizeSlot from '../../normalize-slot';
+
 export default function Edit( {
 	attributes: { slot },
 	setAttributes,
@@ -25,7 +27,9 @@ export default function Edit( {
 			const { getBlocksByName, getBlockAttributes } =
 				select( blockEditorStore );
 			const sameSlot = getBlocksByName( 'hm/outlet-content' ).filter(
-				( id ) => ( getBlockAttributes( id )?.slot ?? '' ) === slot
+				( id ) =>
+					normalizeSlot( getBlockAttributes( id )?.slot ) ===
+					normalizeSlot( slot )
 			);
 			return sameSlot.length > 1 && sameSlot[ 0 ] !== clientId;
 		},
@@ -61,7 +65,7 @@ export default function Edit( {
 						) }
 						value={ slot }
 						onChange={ ( value ) =>
-							setAttributes( { slot: value.trim() } )
+							setAttributes( { slot: normalizeSlot( value ) } )
 						}
 					/>
 				</PanelBody>
